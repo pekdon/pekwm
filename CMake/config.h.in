@@ -9,6 +9,7 @@
 #cmakedefine HAVE_SWPRINTF
 #cmakedefine HAVE_SETENV
 #cmakedefine HAVE_UNSETENV
+#cmakedefine HAVE_DAEMON
 #cmakedefine HAVE_TIMERSUB
 
 #cmakedefine HAVE_SHAPE
