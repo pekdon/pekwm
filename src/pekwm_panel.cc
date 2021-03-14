@@ -1190,7 +1190,7 @@ public:
     {
         PanelWidget::render(rend);
 
-        int height = _theme.getHeight() - 2;
+        uint height = _theme.getHeight() - 2;
         for (auto it : _entries) {
             int x = getX() + it.getX();
 
@@ -1337,7 +1337,7 @@ private:
                 percent = 100.0;
             }
             return percent / 100;
-        } catch (std::invalid_argument ex) {
+        } catch (std::invalid_argument &ex) {
             return 0.0;
         }
     }

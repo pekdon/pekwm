@@ -502,7 +502,7 @@ PImage::drawTiled(Render &rend, int x, int y, uint width, uint height)
         auto ximage = createXImage(_data, _width, _height);
         if (ximage) {
             auto render =
-                [this, ximage, &rend](int rx, int ry, uint rw, uint rh) {
+                [ximage, &rend](int rx, int ry, uint rw, uint rh) {
                     rend.putImage(ximage, rx, ry, rw, rh);
                 };
             renderTiled(x, y, width, height, _width, _height, render);

@@ -135,7 +135,7 @@ endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 if (PEDANTIC)
   set(pekwm_FEATURES "${pekwm_FEATURES} pedantic")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wno-variadic-macros -pedantic")
 endif (PEDANTIC)
 
 add_definitions(-DVERSION="${pekwm_VERSION}"

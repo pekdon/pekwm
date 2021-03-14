@@ -135,8 +135,8 @@ AutoProperties::load(void)
     _apply_on_start = true;
 
     // set load path for icons while loading auto-properties
-    pekwm::imageHandler()->path_push_back(pekwm::config()->getSystemIconPath());
-    pekwm::imageHandler()->path_push_back(pekwm::config()->getIconPath());
+    _image_handler->path_push_back(pekwm::config()->getSystemIconPath());
+    _image_handler->path_push_back(pekwm::config()->getIconPath());
 
     std::vector<std::string> tokens;
     std::vector<uint> workspaces;
@@ -170,8 +170,8 @@ AutoProperties::load(void)
         }
     }
 
-    pekwm::imageHandler()->path_pop_back();
-    pekwm::imageHandler()->path_pop_back();
+    _image_handler->path_pop_back();
+    _image_handler->path_pop_back();
 
     // Validate date
     setDefaultTypeProperties();
@@ -870,14 +870,14 @@ AutoProperties::parseAutoPropertyValue(CfgParser::Entry *section,
             prop->frame_decor = (*it)->getValue();
             break;
         case AP_ICON: {
-            auto image = pekwm::imageHandler()->getImage((*it)->getValue());
+            auto image = _image_handler->getImage((*it)->getValue());
             if (image == nullptr) {
                 USER_WARN("failed to load icon " << (*it)->getValue()
                           << " ignoring icon property");
             } else {
                 prop->maskAdd(AP_ICON);
                 prop->icon = new PImageIcon(image);
-                pekwm::imageHandler()->returnImage(image);
+                _image_handler->returnImage(image);
             }
             break;
         }
