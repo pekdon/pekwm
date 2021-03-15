@@ -11,9 +11,9 @@
 #include "config.h"
 
 #include "pekwm.hh"
+#include "PDecor.hh"
 
 class Theme;
-class PDecor;
 
 //! @brief Status display window.
 class StatusWindow : public PDecor {

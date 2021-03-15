@@ -35,7 +35,7 @@ static void parse_pad(const std::string& str, uint *pad)
         for (uint i = 0; i < PAD_NO; ++i) {
             try {
                 pad[i] = std::stoi(tok[i]);
-            } catch (const std::invalid_argument& ex) {
+            } catch (const std::invalid_argument&) {
                 pad[i] = 0;
             }
         }
@@ -63,7 +63,7 @@ Theme::ColorMap::load(CfgParser::Entry *section)
                 int from_c = parseColor((*it)->getValue());
                 int to_c = parseColor(to->getValue());
                 insert({from_c, to_c});
-            } catch (std::invalid_argument &ex) {
+            } catch (std::invalid_argument&) {
                 USER_WARN("invalid colors from " << (*it)->getValue()
                           << " to " << to->getValue() << " in ColorMap entry");
             }
@@ -275,6 +275,12 @@ Theme::PDecorData::PDecorData(FontHandler* fh, TextureHandler* th,
 Theme::PDecorData::~PDecorData(void)
 {
     unload();
+}
+
+uint
+Theme::PDecorData::getPad(PadType pad) const
+{
+    return _pad[(pad != PAD_NO) ? pad : 0];
 }
 
 /**

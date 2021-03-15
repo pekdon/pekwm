@@ -33,17 +33,8 @@ public:
         SOURCE_VIRTUAL /**< Source base type. */
     };
 
-    /**
-     * CfgParserSource constructor, just set default values.
-     */
-    CfgParserSource(const std::string &source)
-        : _name(source),
-          _type(SOURCE_VIRTUAL),
-          _line(0),
-          _is_dynamic(false)
-    {
-    }
-    virtual ~CfgParserSource (void) { }
+    CfgParserSource(const std::string &source);
+    virtual ~CfgParserSource (void);
 
     virtual bool open(void) = 0;
     virtual void close(void) = 0;
@@ -65,7 +56,7 @@ public:
     bool isDynamic(void) const { return _is_dynamic; }
 
 protected:
-    int getc(int c) {
+    int get_char(int c) {
         if (c == '\n') {
             ++_line;
         }
@@ -92,7 +83,7 @@ public:
      * Gets a character from _file, increments line count if \n.
      */
     virtual int getc(void) override {
-        return CfgParserSource::getc(std::fgetc(_file));
+        return get_char(std::fgetc(_file));
     }
 
     /**
@@ -130,13 +121,8 @@ public:
 class CfgParserSourceString : public CfgParserSource
 {
 public:
-    CfgParserSourceString(const std::string &source, const std::string &data)
-        : CfgParserSource(source),
-          _data(data)
-    {
-        _pos = _data.begin();
-    }
-    virtual ~CfgParserSourceString(void) { }
+    CfgParserSourceString(const std::string &source, const std::string &data);
+    virtual ~CfgParserSourceString(void);
 
     virtual bool open(void) override;
     virtual void close(void) override;

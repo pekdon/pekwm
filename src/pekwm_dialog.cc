@@ -695,14 +695,12 @@ int main(int argc, char* argv[])
             title = Charset::to_wide_str(optarg);
             break;
         case 'f':
-            if (Debug::setLogFile(optarg)) {
-                Debug::enable_logfile = true;
-            } else {
+            if (! Debug::setLogFile(optarg)) {
                 std::cerr << "Failed to open log file " << optarg << std::endl;
             }
             break;
         case 'l':
-            Debug::level = Debug::getLevel(optarg);
+            Debug::setLevel(Debug::getLevel(optarg));
             break;
         default:
             usage(argv[0], 1);

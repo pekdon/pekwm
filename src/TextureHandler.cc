@@ -38,7 +38,7 @@ parseSize(const std::string &str, uint &width, uint &height)
     try {
         width = std::stoi(tok[0]);
         height = std::stoi(tok[1]);
-    } catch (std::invalid_argument &ex) {
+    } catch (std::invalid_argument&) {
         return false;
     }
     return true;
@@ -269,7 +269,7 @@ TextureHandler::parseLines(bool horz, std::vector<std::string> &tok)
             size_percent = false;
             line_size = std::stoi(tok[0]);
         }
-    } catch (const std::invalid_argument& ex) {
+    } catch (const std::invalid_argument&) {
         return nullptr;
     }
 

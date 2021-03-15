@@ -114,6 +114,32 @@ PDecor::Button::setState(ButtonState state)
     }
 }
 
+PDecor::TitleItem::TitleItem(void)
+    : _count(0),
+      _id(0),
+      _info(0),
+      _width(0)
+{
+}
+
+void
+PDecor::TitleItem::infoAdd(enum Info info)
+{
+    _info |= info;
+}
+
+void
+PDecor::TitleItem::infoRemove(enum Info info)
+{
+    _info &= ~info;
+}
+
+bool
+PDecor::TitleItem::infoIs(enum Info info)
+{
+    return (_info&info);
+}
+
 //! @brief Update visible version of title
 void
 PDecor::TitleItem::updateVisible(void) {
@@ -126,7 +152,7 @@ PDecor::TitleItem::updateVisible(void) {
         _visible.append(L"[");
 
         if (infoIs(INFO_ID) && pekwm::config()->isShowClientID()) {
-            _visible.append(Charset::to_wide_str(Util::to_string<uint>(_id)));
+            _visible.append(Charset::to_wide_str(std::to_string(_id)));
         }
         if (infoIs(INFO_MARKED)) {
             _visible.append(L"M");
@@ -147,7 +173,7 @@ PDecor::TitleItem::updateVisible(void) {
     // Add client number to title
     if (_count > 0) {
       _visible.append(Charset::to_wide_str(pekwm::config()->getClientUniqueNamePre()));
-      _visible.append(Charset::to_wide_str(Util::to_string(_count)));
+      _visible.append(Charset::to_wide_str(std::to_string(_count)));
       _visible.append(Charset::to_wide_str(pekwm::config()->getClientUniqueNamePost()));
     }
 }
@@ -308,7 +334,8 @@ PDecor::createBorder(CreateWindowParams &params)
 //! @brief PDecor destructor
 PDecor::~PDecor(void)
 {
-    Util::vectorRemove(_pdecors, this);
+    _pdecors.erase(std::remove(_pdecors.begin(), _pdecors.end(), this),
+                    _pdecors.end());
 
     while (! _children.empty()) {
         removeChild(_children.back(), false); // Don't call delete this.
@@ -945,6 +972,39 @@ PDecor::findButton(Window win)
     return 0;
 }
 
+/**
+ * Returns height of PDecor ignoring shaded state.
+ */
+uint
+PDecor::getRealHeight(void) const
+{
+    return (_shaded ? _real_height : _gm.height);
+}
+
+/**
+ * Returns width of child container.
+ */
+uint
+PDecor::getChildWidth(void) const
+{
+    if ((bdLeft(this) + bdRight(this)) >= _gm.width) {
+        return 1;
+    }
+    return (_gm.width - bdLeft(this) - bdRight(this));
+}
+
+/**
+ * Returns height of child container.
+ */
+uint
+PDecor::getChildHeight(void) const
+{
+    if (decorHeight(this) >= getRealHeight()) {
+        return 1;
+    }
+    return getRealHeight() - decorHeight(this);
+}
+
 PWinObj*
 PDecor::getChildFromPos(int x)
 {
@@ -1185,7 +1245,8 @@ PDecor::moveChildRel(int off)
         off += size;
     }
 
-    Util::vectorRemove(_children, _child);
+    _children.erase(std::remove(_children.begin(), _children.end(), _child),
+                    _children.end());
     _children.insert(_children.begin()+off, _child);
     updatedChildOrder();
 }

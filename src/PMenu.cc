@@ -116,7 +116,9 @@ PMenu::~PMenu(void)
 
     // Free resources
     if (_menu_wo) {
-        Util::vectorRemove(_children, _menu_wo);
+        _children.erase(std::remove(_children.begin(), _children.end(),
+                                    _menu_wo),
+                        _children.end());
         removeChildWindow(_menu_wo->getWindow());
         X11::destroyWindow(_menu_wo->getWindow());
         delete _menu_wo;
@@ -858,7 +860,8 @@ PMenu::remove(PMenu::Item *item)
         _has_submenu--;
     }
 
-    Util::vectorRemove(_items, item);
+    _items.erase(std::remove(_items.begin(), _items.end(), item),
+                 _items.end());
     delete item;
 }
 

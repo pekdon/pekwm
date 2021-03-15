@@ -10,6 +10,19 @@
 #include "PImage.hh"
 #include "X11.hh"
 
+PTexture::PTexture(void)
+    : _ok(false),
+      _width(0),
+      _height(0),
+      _type(PTexture::TYPE_NO),
+      _opacity(255)
+{
+}
+
+PTexture::~PTexture(void)
+{
+}
+
 /**
  * Render texture onto drawable.
  */
@@ -76,6 +89,18 @@ PTexture::setBackground(Drawable draw,
         X11::setWindowBackgroundPixmap(draw, pix);
         X11::freePixmap(pix);
     }
+}
+
+uint
+PTexture::getWidth(void) const
+{
+    return _width;
+}
+
+uint
+PTexture::getHeight(void) const
+{
+    return _height;
 }
 
 bool

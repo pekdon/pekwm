@@ -31,32 +31,16 @@ extern "C" {
 namespace String {
     class Key {
     public:
-        Key(const char *key)
-            : _key(key)
-        {
-        }
-        Key(const std::string &key)
-            : _key(key)
-        {
-        }
-        ~Key(void)
-        {
-        }
+        Key(const char *key);
+        Key(const std::string &key);
+        ~Key(void);
 
         const std::string& str(void) const { return _key; }
 
-        bool operator==(const std::string &rhs) const {
-            return (strcasecmp(_key.c_str(), rhs.c_str()) == 0);
-        }
-        bool operator!=(const std::string &rhs) const {
-            return (strcasecmp(_key.c_str(), rhs.c_str()) != 0);
-        }
-        bool operator<(const Key &rhs) const {
-            return (strcasecmp(_key.c_str(), rhs._key.c_str()) < 0);
-        }
-        bool operator>(const Key &rhs) const {
-            return (strcasecmp(_key.c_str(), rhs._key.c_str()) > 0);
-        }
+        bool operator==(const std::string &rhs) const;
+        bool operator!=(const std::string &rhs) const;
+        bool operator<(const Key &rhs) const;
+        bool operator>(const Key &rhs) const;
 
     private:
         std::string _key;
@@ -102,11 +86,6 @@ namespace Util {
         T _data;
         uint _ref;
     };
-
-    template<typename T> void
-    vectorRemove(std::vector<T> &v, T val) {
-        v.erase(std::remove(v.begin(), v.end(), val), v.end());
-    }
 
     std::string getEnv(const std::string& key);
 
@@ -205,11 +184,7 @@ namespace Util {
         return num_tokens - 1;
     }
 
-    template<class T> std::string to_string(T t) {
-        std::ostringstream oss;
-        oss << t;
-        return oss.str();
-    }
+    std::string to_string(void* v);
 
     /**
      * Converts string to uppercase
@@ -274,16 +249,7 @@ namespace Util {
         }
     }
 
-    //! @brief Returns true if value represents true(1 or TRUE).
-    inline bool isTrue(const std::string &value) {
-        if (value.size() > 0) {
-            if ((value[0] == '1') // check for 1 / 0
-                || ! ::strncasecmp(value.c_str(), "TRUE", 4)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    bool isTrue(const std::string &value);
 
     //! @brief for_each delete utility.
     template<class T> struct Free : public std::unary_function<T, void> {

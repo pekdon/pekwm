@@ -137,20 +137,21 @@ public:
     // adds
     static void addToMRUFront(Frame *frame) {
         if (frame) {
-            Util::vectorRemove(_mru, frame);
+            removeFromMRU(frame);
             _mru.insert(_mru.begin(), frame);
         }
     }
 
     static void addToMRUBack(Frame *frame) {
         if (frame) {
-            Util::vectorRemove(_mru, frame);
+            removeFromMRU(frame);
             _mru.push_back(frame);
         }
     }
 
     static void removeFromMRU(Frame *frame) {
-        Util::vectorRemove(_mru, frame);
+        _mru.erase(std::remove(_mru.begin(), _mru.end(), frame),
+                   _mru.end());
     }
 
 private:

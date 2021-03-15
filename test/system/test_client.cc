@@ -20,10 +20,9 @@ query_pointer(Display *dpy, int screen, Window root)
                       &root_x, &root_y, &win_x, &win_y,
                       &mask)) {
         std::cout << "root"
-                  << " x " << root_x << " y " << root_y << std::endl
-                  << "child " << child_ret
-                  << " x " << win_x << " y " << win_y
-                  << std::endl;
+                  << " x " << root_x << " y " << root_y << std::endl;
+        std::cout << "child " << child_ret
+                  << " x " << win_x << " y " << win_y << std::endl;
     } else {
         std::cerr << "ERROR: failed to query pointer" << std::endl;
     }

@@ -25,36 +25,17 @@ public:
     Observer(void) { }
     virtual ~Observer(void) { }
 
-    virtual void notify(Observable *observable, Observation *observation) { }
+    virtual void notify(Observable*, Observation*) { };
 };
 
 class Observable {
 public:
-    Observable(void) { }
-    virtual ~Observable(void) { }
+    Observable(void);
+    virtual ~Observable(void);
 
-    /**
-     * Notify all observers.
-     */
-    void notifyObservers(Observation *observation) {
-        for (auto it : _observers) {
-            it->notify(this, observation);
-        }
-    }
-
-    /**
-     * Add observer.
-     */
-    void addObserver(Observer *observer) {
-        _observers.push_back(observer);
-    }
-
-    /**
-     * Remove observer from list.
-     */
-    void removeObserver(Observer *observer) {
-        Util::vectorRemove(_observers, observer);
-    }
+    void notifyObservers(Observation *observation);
+    void addObserver(Observer *observer);
+    void removeObserver(Observer *observer);
 
 private:
     std::vector<Observer*> _observers; /**< List of observers. */

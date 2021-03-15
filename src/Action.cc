@@ -488,6 +488,36 @@ parseButton(const std::string &button_string, uint &mod, uint &button)
     return false;
 }
 
+Action::Action(uint action)
+    : _action(action)
+{
+}
+
+Action::~Action(void)
+{
+}
+
+ActionEvent::ActionEvent(void)
+    : mod(0),
+      sym(0),
+      type(0),
+      threshold(0)
+{
+}
+
+ActionEvent::ActionEvent(Action action)
+    : mod(0),
+      sym(0),
+      type(0),
+      threshold(0)
+{
+    action_list.push_back(action);
+}
+
+ActionEvent::~ActionEvent(void)
+{
+}
+
 namespace ActionConfig {
 
     bool

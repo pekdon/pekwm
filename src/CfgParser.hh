@@ -65,14 +65,10 @@ public:
             return _entries.end();
         }
 
-        //! @brief Returns the name.
-        const std::string &getName(void) const { return _name; }
-        //! @brief Returns the value.
-        const std::string &getValue(void) const { return _value; }
-        //! @brief Returns the linenumber in the source this was parsed.
-        int getLine(void) const { return _line; }
-        //! @brief Returns the name of the source this was parsed.
-        const std::string &getSourceName(void) const { return _source_name; }
+        const std::string &getName(void) const;
+        const std::string &getValue(void) const;
+        int getLine(void) const;
+        const std::string &getSourceName(void) const;
 
         Entry *addEntry(Entry *entry, bool overwrite=false);
         Entry *addEntry(const std::string &source_name, int line,

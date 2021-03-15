@@ -82,19 +82,17 @@ public:
                  uint padding, uint chars);
 
     // virtual interface
-    virtual bool load(const std::string &font_name) { return true; }
+    virtual bool load(const std::string& font_name) = 0;
     virtual void unload(void) { }
 
-    virtual uint getWidth(const std::wstring &text, uint max_chars = 0)  {
-        return 0;
-    }
-    virtual uint getHeight(void)  { return _height; }
+    virtual uint getWidth(const std::wstring& text, uint max_chars = 0) = 0;
+    virtual uint getHeight(void) { return _height; }
 
-    virtual void setColor(PFont::Color *color)  { }
+    virtual void setColor(PFont::Color* color) = 0;
 
 private:
     virtual void drawText(Drawable dest, int x, int y, const std::wstring &text,
-                        uint chars, bool fg) { }
+                          uint chars, bool fg) = 0;
 
 protected:
     uint _height, _ascent, _descent;

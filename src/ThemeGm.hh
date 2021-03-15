@@ -44,7 +44,7 @@ public:
     virtual bool isShaded(void) const override {
         return false;
     }
-    virtual FocusedState getFocusedState(bool selected) const override {
+    virtual FocusedState getFocusedState(bool) const override {
         return FOCUSED_STATE_FOCUSED;
     }
 
@@ -64,40 +64,12 @@ public:
 
     void setData(Theme::PDecorData *data) { _data = data; }
 
-    uint decorWidth(const ThemeState *state) const {
-        return bdLeft(state) + bdRight(state);
-    }
-    uint decorHeight(const ThemeState *state) const {
-       return bdTop(state) + bdBottom(state) + titleHeight(state);
-    }
+    uint decorWidth(const ThemeState *state) const;
+    uint decorHeight(const ThemeState *state) const;
 
-    /** Returns font used at FocusedState state. */
-    PFont *getFont(FocusedState state) const {
-        return _data->getFont(state);
-    }
-
-    /**
-     * Calculate title width (for given title)
-     */
-    uint titleWidth(const ThemeState *state, const std::wstring& str) const {
-        return getFont(state->getFocusedState(false))->getWidth(str)
-            + _data->getPad(PAD_LEFT) + _data->getPad(PAD_RIGHT)
-            + titleLeftOffset(state) + titleRightOffset(state);
-    }
-
-    /** Calculate title height, 0 if titlebar is disabled. */
-    uint titleHeight(const ThemeState *state) const {
-        if (! state->hasTitlebar()) {
-            return 0;
-        }
-
-        if (_data->isTitleHeightAdapt()) {
-            return getFont(state->getFocusedState(false))->getHeight()
-                + _data->getPad(PAD_UP) + _data->getPad(PAD_DOWN);
-        } else {
-            return _data->getTitleHeight();
-        }
-    }
+    PFont *getFont(FocusedState state) const;
+    uint titleWidth(const ThemeState *state, const std::wstring& str) const;
+    uint titleHeight(const ThemeState *state) const;
 
     /**
      * Offset for title position, depends on border size (and shape)
@@ -124,61 +96,23 @@ public:
         return top_right;
     }
 
-    /**
-     * Offset for top border, if non full width the border is placed
-     * below the titlebar.
-     */
-    uint bdTopOffset(const ThemeState *state) const {
-        return _data->getTitleWidthMin()
-            ? titleHeight(state) : 0;
-    }
-
-    uint bdTop(const ThemeState *state) const {
-        return getBorder(state, BORDER_TOP)->getHeight();
-    };
-    uint bdTopLeft(const ThemeState *state) const {
-        return getBorder(state, BORDER_TOP_LEFT)->getWidth();
-    }
-    uint bdTopLeftHeight(const ThemeState *state) const {
-        return getBorder(state, BORDER_TOP_LEFT)->getHeight();
-    }
-    uint bdTopRight(const ThemeState *state) const {
-        return getBorder(state, BORDER_TOP_RIGHT)->getWidth();
-    }
-    uint bdTopRightHeight(const ThemeState *state) const {
-        return getBorder(state, BORDER_TOP_RIGHT)->getHeight();
-    }
-    uint bdBottom(const ThemeState *state) const {
-        return getBorder(state, BORDER_BOTTOM)->getHeight();
-    }
-    uint bdBottomLeft(const ThemeState *state) const {
-        return getBorder(state, BORDER_BOTTOM_LEFT)->getWidth();
-    }
-    uint bdBottomLeftHeight(const ThemeState *state) const {
-        return getBorder(state, BORDER_BOTTOM_LEFT)->getHeight();
-    }
-    uint bdBottomRight(const ThemeState *state) const {
-        return getBorder(state, BORDER_BOTTOM_RIGHT)->getWidth();
-    }
-    uint bdBottomRightHeight(const ThemeState *state) const {
-        return getBorder(state, BORDER_BOTTOM_RIGHT)->getHeight();
-    }
-    uint bdLeft(const ThemeState *state) const {
-        return getBorder(state, BORDER_LEFT)->getWidth();
-    }
-    uint bdRight(const ThemeState *state) const {
-        return getBorder(state, BORDER_RIGHT)->getWidth();
-    }
+    uint bdTopOffset(const ThemeState *state) const;
+    uint bdTop(const ThemeState *state) const;
+    uint bdTopLeft(const ThemeState *state) const;
+    uint bdTopLeftHeight(const ThemeState *state) const;
+    uint bdTopRight(const ThemeState *state) const;
+    uint bdTopRightHeight(const ThemeState *state) const;
+    uint bdBottom(const ThemeState *state) const;
+    uint bdBottomLeft(const ThemeState *state) const;
+    uint bdBottomLeftHeight(const ThemeState *state) const;
+    uint bdBottomRight(const ThemeState *state) const;
+    uint bdBottomRightHeight(const ThemeState *state) const;
+    uint bdLeft(const ThemeState *state) const;
+    uint bdRight(const ThemeState *state) const;
 
 private:
     const PTexture* getBorder(const ThemeState *state,
-                              BorderPosition pos) const {
-        if (! _data || ! state->hasBorder()) {
-            return &_empty;
-        }
-        auto focused_state = state->getFocusedState(false);
-        return _data->getBorderTexture(focused_state, pos);
-    }
+                              BorderPosition pos) const;
 
 private:
     Theme::PDecorData *_data;

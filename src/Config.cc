@@ -882,6 +882,25 @@ Config::getMenuMask(const std::string &mask)
     return mask_return;
 }
 
+unsigned int
+Config::getMenuIconLimit(unsigned int value, SizeLimitType limit,
+                         const std::string &name) const
+{
+    unsigned int limit_val = 0;
+    auto it(_menu_icon_limits.find(name));
+    if (it == _menu_icon_limits.end()) {
+        if (name == "DEFAULT") {
+            limit_val = 16;
+        } else {
+            limit_val = getMenuIconLimit(value, limit, "DEFAULT");
+        }
+    } else {
+        limit_val = it->second.get(limit);
+    }
+
+    return limit_val ? limit_val : value;
+}
+
 bool
 Config::parseMenuAction(const std::string &action_string, Action &action)
 {

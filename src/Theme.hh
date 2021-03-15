@@ -109,9 +109,7 @@ public:
         //! @brief Returns title maximum width in procent.
         inline int getTitleWidthMax(void) const { return _title_width_max; }
         //! @brief Returns title text pad for dir.
-        inline uint getPad(PadType pad) const {
-            return _pad[(pad != PAD_NO) ? pad : 0];
-        }
+        uint getPad(PadType pad) const;
 
         //! @brief Returns wheter all items in the title have same width.
         inline bool isTitleWidthSymetric(void) const {

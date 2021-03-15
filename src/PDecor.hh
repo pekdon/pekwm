@@ -64,7 +64,7 @@ public:
             INFO_ID = (1 << 2)
         };
 
-        TitleItem(void) : _count(0), _id(0), _info(0), _width(0) { }
+        TitleItem(void);
 
         inline const std::wstring &getVisible(void) const { return _visible; }
         inline const std::wstring &getReal(void) const { return _real; }
@@ -77,9 +77,9 @@ public:
         inline bool isCustom(void) const { return (_custom.size() > 0); }
         inline uint getWidth(void) const { return _width; }
 
-        inline void infoAdd(enum Info info) { _info |= info; }
-        inline void infoRemove(enum Info info) { _info &= ~info; }
-        inline bool infoIs(enum Info info) { return (_info&info); }
+        void infoAdd(enum Info info);
+        void infoRemove(enum Info info);
+        bool infoIs(enum Info info);
 
         void setReal(const std::wstring &real) {
             _real = real;
@@ -202,10 +202,7 @@ public:
     inline Window getTitleWindow(void) const { return _title_wo.getWindow(); }
     PDecor::Button *findButton(Window win);
 
-    //! @brief Returns height of PDecor ignoring shaded state.
-    inline uint getRealHeight(void) const {
-        return (_shaded ? _real_height : _gm.height);
-    }
+    uint getRealHeight(void) const;
 
     //! @brief Returns last click x root position.
     inline int getPointerX(void) const { return _pointer_x; }
@@ -216,20 +213,8 @@ public:
     //! @brief Returns last click y window position.
     inline int getClickY(void) const { return _click_y; }
 
-    //! @brief Returns width of child container.
-    inline uint getChildWidth(void) const {
-        if ((bdLeft(this) + bdRight(this)) >= _gm.width) {
-            return 1;
-        }
-        return (_gm.width - bdLeft(this) - bdRight(this));
-    }
-    /** Returns height of child container. */
-    inline uint getChildHeight(void) const {
-        if (decorHeight(this) >= getRealHeight()) {
-            return 1;
-        }
-        return getRealHeight() - decorHeight(this);
-    }
+    uint getChildWidth(void) const;
+    uint getChildHeight(void) const;
 
     // child list actions
 

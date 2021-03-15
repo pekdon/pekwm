@@ -62,40 +62,14 @@ enum PropertyType {
  */
 class ClassHint {
 public:
-    ClassHint(void) { }
+    ClassHint(void);
     ClassHint(const std::wstring &n_h_name, const std::wstring &n_h_class,
               const std::wstring &n_h_role, const std::wstring &n_title,
-              const std::wstring &n_group)
-        : h_name(n_h_name),
-          h_class(n_h_class),
-          h_role(n_h_role),
-          title(n_title),
-          group(n_group)
-    {
-    }
-    ~ClassHint(void) { }
+              const std::wstring &n_group);
+    ~ClassHint(void);
 
-    inline ClassHint& operator = (const ClassHint& rhs) {
-        h_name = rhs.h_name;
-        h_class = rhs.h_class;
-        h_role = rhs.h_role;
-        title = rhs.title;
-        group = rhs.group;
-
-        return *this;
-    }
-    inline bool operator == (const ClassHint& rhs) const {
-        if (group.size() > 0) {
-            if (group == rhs.group) {
-                return true;
-            }
-        } else if ((h_name == rhs.h_name) && (h_class == rhs.h_class) &&
-                   (h_role == rhs.h_role)) {
-            return true;
-        }
-
-        return false;
-    }
+    ClassHint& operator=(const ClassHint& rhs);
+    bool operator==(const ClassHint& rhs) const;
 
     friend std::ostream& operator<<(std::ostream& os, const ClassHint &ch);
 
@@ -112,8 +86,8 @@ public:
  */
 class Property {
 public:
-    Property(void) : _apply_mask(0) { }
-    virtual ~Property(void) { }
+    Property(void);
+    virtual ~Property(void);
 
     inline RegexString& getHintName(void) { return _hint_name; }
     inline RegexString& getHintClass(void) { return _hint_class; }
@@ -146,24 +120,8 @@ private:
 class AutoProperty : public Property
 {
 public:
-    AutoProperty(void)
-        : skip(SKIP_NONE),
-          cfg_deny(0),
-          icon(nullptr),
-          group_size(-1),
-          group_behind(false),
-          group_focused_first(false),
-          group_global(false),
-          group_raise(false),
-          _prop_mask(0)
-    {
-    }
-    virtual ~AutoProperty(void)
-    {
-        if (icon != nullptr) {
-            delete icon;
-        }
-    }
+    AutoProperty(void);
+    virtual ~AutoProperty(void);
 
     inline bool isMask(uint mask) { return (_prop_mask&mask); }
     inline void maskAdd(uint mask) { _prop_mask |= mask; }

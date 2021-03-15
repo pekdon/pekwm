@@ -222,21 +222,7 @@ public:
     uint getMenuMask(const std::string &mask);
     /** Return maximum allowed icon width. */
     unsigned int getMenuIconLimit(unsigned int value, SizeLimitType limit,
-                                  const std::string &name) const {
-        unsigned int limit_val = 0;
-        auto it(_menu_icon_limits.find(name));
-        if (it == _menu_icon_limits.end()) {
-            if (name == "DEFAULT") {
-                limit_val = 16;
-            } else {
-                limit_val = getMenuIconLimit(value, limit, "DEFAULT");
-            }
-        } else {
-            limit_val = it->second.get(limit);
-        }
-
-        return limit_val ? limit_val : value;
-    }
+                                  const std::string &name) const;
 
     bool parseMenuAction(const std::string& action_string, Action& action);
     bool parseMenuActions(const std::string& actions, ActionEvent& ae);

@@ -85,10 +85,12 @@ public:
 
             if (value_for_type < _value_min) {
                 _set = _value_min;
-                throw std::string("value to low, min value " + Util::to_string<T>(_value_min));
+                throw std::string("value to low, min value "
+                                  + std::to_string(_value_min));
             } if (value_for_type > _value_max)  {
                 _set = _value_max;
-                throw std::string("value to high, max value " + Util::to_string<T>(_value_max));
+                throw std::string("value to high, max value "
+                                  + std::to_string(_value_max));
             }
 
             _set = value_for_type;

@@ -202,27 +202,16 @@ public:
 
     // event interface
 
-    //! @brief Handles button press events, always return 0.
-    virtual ActionEvent *handleButtonPress(XButtonEvent *ev) { return 0; }
-    //! @brief Handles button release events, always return 0.
-    virtual ActionEvent *handleButtonRelease(XButtonEvent *ev) { return 0; }
-    //! @brief Handles key press events, always return 0.
-    virtual ActionEvent *handleKeyPress(XKeyEvent *ev) { return 0; }
-    //! @brief Handles key release vents, always return 0.
-    virtual ActionEvent *handleKeyRelease(XKeyEvent *ev) { return 0; }
-    //! @brief Handles motion events, always return 0.
-    virtual ActionEvent *handleMotionEvent(XMotionEvent *ev) { return 0; }
-    //! @brief Handles enter events, always return 0.
-    virtual ActionEvent *handleEnterEvent(XCrossingEvent *ev) { return 0; }
-    //! @brief Handles leave events, always return 0.
-    virtual ActionEvent *handleLeaveEvent(XCrossingEvent *ev) { return 0; }
-    //! @brief Handles expose events, always return 0.
-    virtual ActionEvent *handleExposeEvent(XExposeEvent *ev) { return 0; }
-
-    //! @brief Handles handle map request events, always return 0.
-    virtual ActionEvent *handleMapRequest(XMapRequestEvent *ev) { return 0; }
-    //! @brief Handles handle unmap events, always return 0.
-    virtual ActionEvent *handleUnmapEvent(XUnmapEvent *ev) { return 0; }
+    virtual ActionEvent *handleButtonPress(XButtonEvent*) { return nullptr; }
+    virtual ActionEvent *handleButtonRelease(XButtonEvent*) { return nullptr; }
+    virtual ActionEvent *handleKeyPress(XKeyEvent*) { return nullptr; }
+    virtual ActionEvent *handleKeyRelease(XKeyEvent*) { return nullptr; }
+    virtual ActionEvent *handleMotionEvent(XMotionEvent*) { return nullptr; }
+    virtual ActionEvent *handleEnterEvent(XCrossingEvent*) { return nullptr; }
+    virtual ActionEvent *handleLeaveEvent(XCrossingEvent*) { return nullptr; }
+    virtual ActionEvent *handleExposeEvent(XExposeEvent*) { return nullptr; }
+    virtual ActionEvent *handleMapRequest(XMapRequestEvent*) { return nullptr; }
+    virtual ActionEvent *handleUnmapEvent(XUnmapEvent*) { return nullptr; }
 
     // operators
 

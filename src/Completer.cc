@@ -61,7 +61,7 @@ public:
     virtual ~CompleterMethod(void) { }
 
     /** Find completions for string. */
-    virtual unsigned int complete(CompletionState &completion_state) {
+    virtual unsigned int complete(CompletionState&) {
         return 0;
     }
     /** Refresh completion list. */

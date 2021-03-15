@@ -628,25 +628,23 @@ WindowManager::restart(std::string command)
 void
 WindowManager::handleSignals(void)
 {
-    TRACE("handle received signal(s):"
-          << " SIGALRM " << is_signal_alrm
-          << " SIGHUP " << is_signal_hup
-          << " SIGCHILD " << is_signal_chld);
-
     // SIGALRM used to timeout workspace indicator
     if (is_signal_alrm) {
+        TRACE("handle SIGALRM");
         is_signal_alrm = false;
         Workspaces::hideWorkspaceIndicator();
     }
 
     // SIGHUP
     if (is_signal_hup || _reload) {
+        TRACE("handle SIGHUP or reload");
         is_signal_hup = false;
         doReload();
     }
 
     // Wait for children if a SIGCHLD was received
     if (is_signal_chld) {
+        TRACE("handle SIGHUP");
         pid_t pid;
         do {
             pid = waitpid(WAIT_ANY, nullptr, WNOHANG);

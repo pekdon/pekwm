@@ -20,6 +20,18 @@ extern "C" {
 
 unsigned int CfgParserSourceCommand::_sigaction_counter = 0;
 
+CfgParserSource::CfgParserSource(const std::string &source)
+    : _name(source),
+      _type(SOURCE_VIRTUAL),
+      _line(0),
+      _is_dynamic(false)
+{
+}
+
+CfgParserSource::~CfgParserSource (void)
+{
+}
+
 /**
  * Open file based configuration source.
  */
@@ -49,6 +61,19 @@ CfgParserSourceFile::close(void)
     _file = 0;
 }
 
+
+CfgParserSourceString::CfgParserSourceString(const std::string &source,
+                                             const std::string &data)
+    : CfgParserSource(source),
+      _data(data)
+{
+    _pos = _data.begin();
+}
+
+CfgParserSourceString::~CfgParserSourceString(void)
+{
+}
+
 bool
 CfgParserSourceString::open(void)
 {
@@ -68,7 +93,7 @@ CfgParserSourceString::getc(void)
     if (_pos == _data.end()) {
         return EOF;
     }
-    return CfgParserSource::getc(*_pos++);
+    return CfgParserSource::get_char(*_pos++);
 }
 
 void

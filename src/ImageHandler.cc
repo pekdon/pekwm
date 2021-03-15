@@ -149,8 +149,10 @@ ImageHandler::returnImage(PImage *image)
 void
 ImageHandler::takeOwnership(PImage *image)
 {
-    std::string key = Util::to_string<void*>(static_cast<void*>(image));
-    _images.emplace(std::make_pair(key, Util::RefEntry<PImage*>(image)));
+    auto key = Util::to_string(static_cast<void*>(image));
+    auto entry = Util::RefEntry<PImage*>(image);
+    auto pair = std::make_pair(key, entry);
+    _images.emplace(pair);
 }
 
 PImage*

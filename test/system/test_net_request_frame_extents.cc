@@ -52,9 +52,9 @@ setMotifWmHints(Display *dpy, Window win, bool titlebar, bool border)
     mwm_hints[2] =
         (titlebar ? MWM_DECOR_TITLE : 0) |
         (border ? MWM_DECOR_BORDER : 0);
-    std::cout << "PROGRESS: setting _MOTIF_WM_HINTS "
-              << " titlebar " << titlebar << " border " << border
-              << " flags " << mwm_hints[2] << std::endl;
+    std::cout << "PROGRESS: setting _MOTIF_WM_HINTS ";
+    std::cout << " titlebar " << titlebar << " border " << border;
+    std::cout << " flags " << mwm_hints[2] << std::endl;
     XChangeProperty(dpy, win, atom, atom, 32, PropModeReplace,
                     reinterpret_cast<unsigned char*>(mwm_hints), 3);
     // Skip property notify caused by property change
@@ -133,18 +133,18 @@ main(int argc, char *argv[])
                        &items_ret, &after_ret,
                        &data);
 
-    std::cout << "PROGRESS: "
-              << "type_ret " << type_ret <<  " "
-              << "format_ret " << format_ret << " "
-              << "items_ret " << items_ret << " "
-              << "after_ret " << after_ret << std::endl;
+    std::cout << "PROGRESS: ";
+    std::cout << "type_ret " << type_ret <<  " ";
+    std::cout << "format_ret " << format_ret << " ";
+    std::cout << "items_ret " << items_ret << " ";
+    std::cout << "after_ret " << after_ret << std::endl;
     if (items_ret == 4) {
         long *extents = reinterpret_cast<long*>(data);
-        std::cout << "OK: extents "
-                  << "left " << extents[0] << " "
-                  << "right " << extents[1] << " "
-                  << "top " << extents[2] << " "
-                  << "bottom " << extents[3] << std::endl;
+        std::cout << "OK: extents ";
+        std::cout << "left " << extents[0] << " ";
+        std::cout << "right " << extents[1] << " ";
+        std::cout << "top " << extents[2] << " ";
+        std::cout << "bottom " << extents[3] << std::endl;
     } else {
         std::cerr << "ERROR: expected 4 items returned, got " << items_ret
                   << std::endl;

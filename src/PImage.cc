@@ -33,7 +33,7 @@ destroyXImage(XImage *ximage)
 /**
  * Create pixel value suitable for ximage from R, G and B.
  */
-static inline ulong
+static ulong
 getPixelFromRgb(XImage* ximage, uchar r, uchar g, uchar b)
 {
     // 5 R, 5 G, 5 B (15 bit display)
@@ -63,7 +63,7 @@ getPixelFromRgb(XImage* ximage, uchar r, uchar g, uchar b)
 /**
  * Fill in RGB values from pixel value from ximage.
  */
-static inline void
+static void
 getRgbFromPixel(XImage *ximage, ulong pixel, uchar &r, uchar &g, uchar &b)
 {
     // 5 R, 5 G, 5 B (15 bit display)

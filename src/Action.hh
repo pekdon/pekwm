@@ -178,19 +178,8 @@ namespace ActionUtil {
 
 class Action {
 public:
-    Action()
-        : _action(ACTION_UNSET)
-    {
-    }
-
-    Action(uint action)
-    {
-        _action = action;
-    }
-
-    ~Action(void)
-    {
-    }
+    Action(uint action = ACTION_UNSET);
+    ~Action(void);
 
     inline uint getAction(void) const { return _action; }
     inline int getParamI() const {
@@ -241,16 +230,9 @@ private:
 
 class ActionEvent {
 public:
-    ActionEvent(void) { }
-    ActionEvent(Action action)
-        : mod(0),
-          sym(0),
-          type(0),
-          threshold(0)
-    {
-        action_list.push_back(action);
-    }
-    ~ActionEvent(void) { }
+    ActionEvent(void);
+    ActionEvent(Action action);
+    ~ActionEvent(void);
 
     inline bool isOnlyAction(uint action) const {
         return ((action_list.size() == 1) &&

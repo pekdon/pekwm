@@ -27,17 +27,8 @@ public:
         TYPE_NO
     };
 
-    PTexture()
-        : _ok(false),
-          _width(0),
-          _height(0),
-          _type(PTexture::TYPE_NO),
-          _opacity(255)
-    {
-    }
-    virtual ~PTexture(void)
-    {
-    }
+    PTexture(void);
+    virtual ~PTexture(void);
 
     void render(Drawable draw,
                 int x, int y, uint width, uint height,
@@ -48,16 +39,14 @@ public:
     virtual void doRender(Render &rend,
                           int x, int y, uint width, uint height) = 0;
     virtual bool getPixel(ulong &pixel) const = 0;
-    virtual Pixmap getMask(uint width, uint height, bool &do_free) {
-        return None;
-    }
+    virtual Pixmap getMask(uint, uint, bool&) { return None; }
 
     void setBackground(Drawable draw,
                        int x, int y, uint width, uint height);
 
     bool isOk(void) const { return _ok; }
-    uint getWidth(void) const { return _width; }
-    uint getHeight(void) const { return _height; }
+    uint getWidth(void) const;
+    uint getHeight(void) const;
     PTexture::Type getType(void) const { return _type; }
 
     void setWidth(uint width) { _width = width; }

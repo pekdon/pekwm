@@ -37,7 +37,42 @@ extern "C" {
 
 #define THEME_DEFAULT DATADIR "/pekwm/themes/default/theme"
 
-namespace String {
+namespace String
+{
+    Key::Key(const char *key)
+        : _key(key)
+    {
+    }
+
+    Key::Key(const std::string &key)
+        : _key(key)
+    {
+    }
+
+    Key::~Key(void)
+    {
+    }
+
+    bool
+    Key::operator==(const std::string &rhs) const {
+        return (strcasecmp(_key.c_str(), rhs.c_str()) == 0);
+    }
+
+    bool
+    Key::operator!=(const std::string &rhs) const {
+        return (strcasecmp(_key.c_str(), rhs.c_str()) != 0);
+    }
+
+    bool
+    Key::operator<(const Key &rhs) const {
+        return (strcasecmp(_key.c_str(), rhs._key.c_str()) < 0);
+    }
+
+    bool
+    Key::operator>(const Key &rhs) const {
+        return (strcasecmp(_key.c_str(), rhs._key.c_str()) > 0);
+    }
+
     /** Get safe version of position */
     size_t safe_position(size_t pos, size_t fallback, size_t add) {
         return pos == std::wstring::npos ? fallback : (pos + add);
@@ -136,20 +171,6 @@ forkExec(std::string command)
     }
 }
 
-static void
-forkExecLog(const char* fun, int line, const char *msg,
-            const std::vector<std::string>& args)
-{
-    DebugErrObj dobj;
-    dobj << _PEK_DEBUG_START(fun, line)
-         << " " << msg  << ": " << strerror(errno)
-         << ". args";
-    auto it = args.begin();
-    for (; it != args.end(); ++it) {
-        dobj << " " << *it;
-    }
-}
-
 pid_t
 forkExec(const std::vector<std::string>& args)
 {
@@ -168,11 +189,10 @@ forkExec(const std::vector<std::string>& args)
 
         setsid();
         execvp(argv[0], argv);
-        forkExecLog(__PRETTY_FUNCTION__, __LINE__, "execvp failed", args);
         exit(1);
     }
     case -1:
-        forkExecLog(__PRETTY_FUNCTION__, __LINE__, "fork failed", args);
+        ERR("fork failed: " << strerror(errno));
     default:
         TRACE("started child " << pid);
         return pid;
@@ -407,6 +427,26 @@ spaceChars(wchar_t escape)
 {
     return L" \t\n";
 }
+    /**
+     * Returns true if value represents true(1 or TRUE).
+     */
+    bool
+    isTrue(const std::string &value)
+    {
+        if (value.size() > 0) {
+            if ((value[0] == '1') // check for 1 / 0
+                || ! ::strncasecmp(value.c_str(), "TRUE", 4)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    std::string to_string(void* v)
+    {
+        std::ostringstream oss;
+        oss << v;
+        return oss.str();
+    }
 
 } // end namespace Util.

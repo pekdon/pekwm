@@ -67,7 +67,7 @@ public:
     // START - PTexture interface.
     virtual void doRender(Render &rend,
                           int x, int y, uint width, uint height) override;
-    virtual bool getPixel(ulong &pixel) const override { return false; }
+    virtual bool getPixel(ulong&) const override { return false; }
     // END - PTexture interface.
 
     inline void setLineOff(uint loff) { _loff = loff; _loff2 = loff * 2; }
@@ -109,7 +109,7 @@ public:
     // START - PTexture interface.
     virtual void doRender(Render &rend,
                           int x, int y, uint width, uint height) override;
-    virtual bool getPixel(ulong &pixel) const override { return false; }
+    virtual bool getPixel(ulong&) const override { return false; }
     // END - PTexture interface.
 
 private:
@@ -143,7 +143,7 @@ public:
     // START - PTexture interface.
     virtual void doRender(Render &rend,
                           int x, int y, uint width, uint height) override;
-    virtual bool getPixel(ulong &pixel) const override { return false; }
+    virtual bool getPixel(ulong&) const override { return false; }
     virtual Pixmap getMask(uint width, uint height, bool &do_free) override;
     // END - PTexture interface.
 

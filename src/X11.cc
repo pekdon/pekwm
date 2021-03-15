@@ -70,7 +70,7 @@ extern "C" {
         }
 
         ++xerrors_count;
-        if (Debug::level >= Debug::LEVEL_TRACE) {
+        if (Debug::getLevel() >= Debug::LEVEL_TRACE) {
             char error_buf[256];
             XGetErrorText(dpy, ev->error_code, error_buf, 256);
             TRACE("XError: " << error_buf << " id: " << ev->resourceid);
@@ -172,9 +172,9 @@ static const char *atomnames[] = {
 std::ostream&
 operator<<(std::ostream& os, const Geometry& gm)
 {
-    os << "Geometry"
-       << " x:" << gm.x << " y: " << gm.y
-       << " width: " << gm.width << " height: " << gm.height;
+    os << "Geometry";
+    os << " x:" << gm.x << " y: " << gm.y;
+    os << " width: " << gm.width << " height: " << gm.height;
     return os;
 }
 
@@ -951,8 +951,14 @@ X11::getKeycodeFromMask(uint mask)
  * Wrapper for XKeycodeToKeysym and XkbKeycodeToKeysym depending on
  * which one is available.
  */
+#ifdef __GNUG__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#else // ! __GNUG__
+#ifdef __SUNPRO_CC
+#pragma error_messages (off,symdeprecated)
+#endif // __SUNPRO_CC
+#endif // __GNUG__
 KeySym
 X11::getKeysymFromKeycode(KeyCode keycode)
 {
@@ -963,7 +969,9 @@ X11::getKeysymFromKeycode(KeyCode keycode)
 #endif
         return XKeycodeToKeysym(_dpy, keycode, 0);
 }
+#ifdef __GNUG__
 #pragma GCC diagnostic pop
+#endif // __GNUG__
 
 /**
  * Parse string and set on geometry, same format as XParseGeometry

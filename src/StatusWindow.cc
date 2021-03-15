@@ -10,7 +10,6 @@
 
 #include "Debug.hh"
 #include "PWinObj.hh"
-#include "PDecor.hh"
 #include "StatusWindow.hh"
 #include "X11.hh"
 #include "PTexture.hh"
@@ -55,7 +54,9 @@ StatusWindow::~StatusWindow(void)
     Workspaces::remove(this);
 
     // remove ourself from the decor manually, no need to reparent and stuff
-    Util::vectorRemove(_children, _status_wo);;
+    _children.erase(std::remove(_children.begin(), _children.end(),
+                                _status_wo),
+                    _children.end());
 
     // free resources
     X11::destroyWindow(_status_wo->getWindow());

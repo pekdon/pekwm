@@ -98,11 +98,9 @@ main(int argc, char **argv)
             printInfo();
             stop(write_fd, "stop", nullptr);
         } else if (strcmp("--log-level", argv[i]) == 0 && ((i + 1) < argc)) {
-            Debug::level = Debug::getLevel(argv[++i]);
+            Debug::setLevel(Debug::getLevel(argv[++i]));
         } else if (strcmp("--log-file", argv[i]) == 0 && ((i + 1) < argc)) {
-            if (Debug::setLogFile(argv[++i])) {
-                Debug::enable_logfile = true;
-            } else {
+            if (! Debug::setLogFile(argv[++i])) {
                 std::cerr << "Failed to open log file " << argv[i] << std::endl;
             }
         } else if (strcmp("--replace", argv[i]) == 0) {

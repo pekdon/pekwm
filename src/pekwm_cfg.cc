@@ -20,8 +20,8 @@ extern "C" {
 
 static void usage(const char* name, int ret)
 {
-    std::cout << "usage: " << name << " [-j]" << std::endl
-              << "  -j --json file    dump file as JSON" << std::endl;
+    std::cout << "usage: " << name << " [-j]" << std::endl;
+    std::cout << "  -j --json file    dump file as JSON" << std::endl;
     exit(ret);
 }
 

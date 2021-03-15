@@ -44,7 +44,7 @@ public:
     }
     virtual ~TestSuite() { }
 
-    static int main(int argc, char *argv[])
+    static int main(int, char **)
     {
         bool status = true;
 
@@ -68,7 +68,7 @@ public:
         bool status = true;
 
         std::cout << _name << std::endl;
-        typename std::map<std::string, test_fn>::iterator it(_tests.begin());
+        std::map<std::string, test_fn>::iterator it(_tests.begin());
         for (; it != _tests.end(); ++it) {
             try {
                 std::cout << "  * " << it->first << "...";

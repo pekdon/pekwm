@@ -125,7 +125,7 @@ namespace Charset
         try {
             std::locale locale(std::locale(""), new NoGroupingNumpunct());
             std::locale::global(locale);
-	} catch (const std::runtime_error &e) {
+        } catch (const std::runtime_error&) {
             ERR("The environment variables specify an unknown C++ locale - "
                 "falling back to C's setlocale().");
             setlocale(LC_ALL, "");

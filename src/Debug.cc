@@ -21,96 +21,106 @@ static Util::StringMap<Debug::Level> debug_level_map =
      {"DEBUG", Debug::LEVEL_DEBUG},
      {"TRACE", Debug::LEVEL_TRACE}};
 
+static Debug::Level _level = Debug::LEVEL_WARN;
+static bool _use_cerr = true;
+std::ofstream _log("/dev/null");
+
 
 /**
- * Get log level from string.
+ * Output current timestamp to log stream.
  */
-Debug::Level
-Debug::getLevel(const std::string& str)
+static void
+addTimestamp(std::ostream &log)
 {
-    return debug_level_map.get(str);
+    std::time_t t = std::time(nullptr);
+    std::tm tm;
+    localtime_r(&t, &tm);
+    log << std::put_time(&tm, "%Y-%m-%d %H:%M:%S ");
 }
 
-/**
- * Debug Commands:
- *
- * enable [logfile|cerr] - enable logging to [logfile|std::cerr]
- * disable [logfile|cerr] - disable logging to [logfile|std::cerr]
- * toggle [logfile|cerr] - toggle logging to [logfile|std::cerr]
- * logfile <filename> - open filename as the logfile
- *                      (this always closes the old logfile)
- * dump - write all stored log messages to the logfile
- * maxmsgs - log the current maximum number of stored messages
- * maxmsgs <nr> - sets the maximum of stored messages (in RAM) to nr
- * level [err|warn|info|debug|trace] - sets log level.
- *
- */
-void
-Debug::doAction(const std::string &cmd)
+namespace Debug
 {
-    std::vector<std::string> args;
-    uint nr = Util::splitString(cmd, args, " \t");
-    if (nr) {
-        Util::to_lower(args[0]);
+
+    /**
+     * Get log level from string.
+     */
+    Level
+    getLevel(const std::string& str)
+    {
+        return debug_level_map.get(str);
     }
 
-    if (nr == 1) {
-        if (args[0] == "dump") {
-            if (! _log.is_open())
-                return;
-            _log << "--- DUMPING LOG ---" << std::endl;
-            for (unsigned i=0; i < _msgs.size(); ++i) {
-                _log << i << ".) " << _msgs[i] << std::endl;
-            }
-        } else if (args[0] == "maxmsgs") {
-            _log << "Currently are " << _max_msgs << " log entries stored."
-                 << std::endl;
+    /**
+     * Get current log level.
+     */
+    Level
+    getLevel(void)
+    {
+        return _level;
+    }
+
+    /**
+     * Set log level.
+     */
+    void
+    setLevel(Level level)
+    {
+        _level = level;
+    }
+
+    std::ostream&
+    getStream(const char* prefix)
+    {
+        std::ostream& log = _use_cerr ? std::cerr : _log;
+        addTimestamp(log);
+        log << prefix;
+        return log;
+    }
+
+    std::ostream&
+    getStream(const char* fun, int line, const char* prefix)
+    {
+        std::ostream& log = _use_cerr ? std::cerr : _log;
+        addTimestamp(log);
+        log << fun << '@' << line << ":\n    " << prefix;
+        return log;
+    }
+
+    /**
+     * Set log file.
+     */
+    bool
+    setLogFile(const std::string& path)
+    {
+        _log.close();
+        _log.open(path);
+        return _log.good();
+    }
+
+    /**
+     * Debug Commands:
+     *
+     * logfile <filename> - set log file, use - for stderr.
+     * level [err|warn|info|debug|trace] - sets log level.
+     */
+    void
+    doAction(const std::string &cmd)
+    {
+        std::vector<std::string> args;
+        if (Util::splitString(cmd, args, " \t") != 2) {
+            return;
         }
-    } else if (nr == 2) {
-        if (args[0] == "enable") {
-            if (args[1] == "logfile") {
-                enable_logfile = true;
-            } else if (args[1] == "cerr") {
-                enable_cerr = true;
-            }
-        } else if (args[0] == "disable") {
-            if (args[1] == "logfile") {
-                enable_logfile = false;
-            } else if (args[1] == "cerr") {
-                enable_cerr = false;
-            }
-        } else if (args[0] == "toggle") {
-            if (args[1] == "logfile") {
-                enable_logfile = ! enable_logfile;
-            } else if (args[1] == "cerr") {
-                enable_cerr = ! enable_cerr;
-            }
-        } else if (args[0] == "logfile") {
-            setLogFile(args[1].c_str());
-            if (! _log.is_open()) {
-                enable_logfile = false;
-            }
-        } else if (args[0] == "maxmsgs") {
-            int nr = std::atoi(args[1].c_str());
-            if (nr>=0) {
-                _max_msgs = nr;
-                if (_msgs.size() > _max_msgs) {
-                    _msgs.erase(_msgs.begin(),
-                                _msgs.begin() + _msgs.size() - _max_msgs);
-                }
+
+        Util::to_lower(args[0]);
+        if (args[0] == "logfile") {
+            if (args[1] == "-") {
+                _log.close();
+                _use_cerr = true;
             } else {
-                WARN("Debug command \"maxmsgs\" called with wrong parameter.");
+                _use_cerr = ! setLogFile(args[1]);
             }
         } else if (args[0] == "level") {
-            Debug::level = debug_level_map.get(args[1]);
+            _level = debug_level_map.get(args[1]);
         }
     }
 }
-
-Debug::Level Debug::level = LEVEL_WARN;
-bool Debug::enable_cerr = true;
-bool Debug::enable_logfile = false;
-
-std::ofstream Debug::_log("/dev/null");
-std::vector<std::string> Debug::_msgs;
-std::vector<std::string>::size_type Debug::_max_msgs = 32;

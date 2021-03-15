@@ -26,7 +26,7 @@ main(int argc, char *argv[])
     // Setup environment required for the tests
     Config cfg;
     HintWO hint_wo(None);
-    Debug::enable_cerr = false;
+    Debug::setLogFile("/dev/null");
     X11::addHead(Head(0, 0, 800, 600));
 
     // Action

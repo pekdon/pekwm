@@ -160,28 +160,28 @@ protected:
     /**
      * X11 event callback.
      */
-    virtual void handleEvent(XEvent *ev)
+    virtual void handleEvent(XEvent*)
     {
     }
 
     /**
      * File-descriptor callback, called whenever data is available on fd.
      */
-    virtual void handleFd(int fd)
+    virtual void handleFd(int)
     {
     }
 
     /**
      * Refresh function, called at every timeout interval.
      */
-    virtual void refresh(bool timed_out)
+    virtual void refresh(bool)
     {
     }
 
     /**
      * Called whenever a child process finish
      */
-    virtual void handleChildDone(pid_t pid, int code)
+    virtual void handleChildDone(pid_t, int)
     {
     }
 

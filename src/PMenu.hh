@@ -110,7 +110,7 @@ public:
     virtual void remove(PMenu::Item *item);
     virtual void removeAll(void);
 
-    virtual void reload(CfgParser::Entry *section) { }
+    virtual void reload(CfgParser::Entry*) { }
     void buildMenu(void);
 
     inline uint size(void) const { return _items.size(); }
@@ -126,7 +126,7 @@ public:
 
     inline MenuType getMenuType(void) const { return _menu_type; }
 
-    virtual void handleItemExec(PMenu::Item *item) { }
+    virtual void handleItemExec(PMenu::Item*) { }
 
     // control ( mapping, unmapping etc )
     void mapUnderMouse(void);

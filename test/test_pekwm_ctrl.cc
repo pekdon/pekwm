@@ -16,7 +16,7 @@ public:
     static void testSendCmd(void) {
         std::vector<std::pair<std::string, int>> bufs;
         auto send_message =
-            [&] (Window win, AtomName an, int fmt,
+            [&] (Window, AtomName, int,
                  const void *data, size_t size) {
                 char *buf = new char[size];
                 memcpy(buf, data, size);

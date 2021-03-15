@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/Modules/")
-include(CheckSymbolExists)
-include(CheckCXXCompilerFlag)
-include(CheckCXXSourceRuns)
 
 project(pekwm)
 set(pekwm_VERSION_MAJOR 0)
@@ -12,14 +9,12 @@ set(pekwm_VERSION_PATCH 0)
 set(pekwm_VERSION "${pekwm_VERSION_MAJOR}.${pekwm_VERSION_MINOR}.${pekwm_VERSION_PATCH}")
 
 # Check for C++11
-check_cxx_compiler_flag(-std=c++11 HAS_CXX11)
-if (HAS_CXX11)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-else (HAS_CXX11)
-  message(FATAL_ERROR "Compiler with C++11 support is required")
-endif (HAS_CXX11)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Add support for more install configuration
+include(CheckSymbolExists)
+include(CheckCXXCompilerFlag)
+include(CheckCXXSourceRuns)
 include(GNUInstallDirs)
 
 # Look for dependencies
@@ -27,6 +22,11 @@ find_package(X11 REQUIRED)
 find_package(Iconv REQUIRED)
 
 check_function_exists(localtime_r HAVE_LOCALTIME_R REQUIRED)
+
+# Add work-around for missing -std=c++11 flag when running the
+# check_cxx_source_runs tests
+set(orig_CMAKE_CXX_FLAGS ${CMAKE_CXX11_FLAGS})
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX11_STANDARD_COMPILE_OPTION})
 
 # Look for missing C++-11 features
 check_cxx_source_runs("
@@ -50,6 +50,8 @@ check_cxx_source_runs("
 #include <string>
 int main() { std::stof(\"42.0\"); }
 " HAVE_STOF)
+
+set(CMAKE_CXX_FLAGS ${orig_CMAKE_CXX_FLAGS})
 
 # Look for platform specific methods
 check_function_exists(swprintf HAVE_SWPRINTF)

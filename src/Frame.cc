@@ -200,7 +200,8 @@ Frame::~Frame(void)
     // remove from lists
     _wo_map.erase(_window);
     woListRemove(this);
-    Util::vectorRemove(_frames, this);
+    _frames.erase(std::remove(_frames.begin(), _frames.end(), this),
+                  _frames.end());
     Workspaces::removeFromMRU(this);
     if (_tag_frame == this) {
         _tag_frame = 0;

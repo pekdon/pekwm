@@ -88,6 +88,30 @@ CfgParser::Entry::~Entry(void)
     }
 }
 
+const std::string&
+CfgParser::Entry::getName(void) const
+{
+    return _name;
+}
+
+const std::string&
+CfgParser::Entry::getValue(void) const
+{
+    return _value;
+}
+
+int
+CfgParser::Entry::getLine(void) const
+{
+    return _line;
+}
+
+const std::string&
+CfgParser::Entry::getSourceName(void) const
+{
+    return _source_name;
+}
+
 /**
  * Append Entry to the end of Entry list at current depth.
  */
@@ -269,8 +293,8 @@ CfgParser::Entry::copyTreeInto(CfgParser::Entry *from, bool overwrite)
 std::ostream&
 operator<<(std::ostream &stream, const CfgParser::Entry &entry)
 {
-    stream << entry.getSourceName() << "@" << entry.getLine()
-           << " " << entry.getName() << " = " << entry.getValue();
+    stream << entry.getSourceName() << "@" << entry.getLine();
+    stream << " " << entry.getName() << " = " << entry.getValue();
     return stream;
 }
 
